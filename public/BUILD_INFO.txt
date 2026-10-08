@@ -1,0 +1,8 @@
+project: faro-mecanico
+stage: bootstrap-hosting (T01a)
+status: NO_JUGABLE
+note: Placeholder de bootstrap. No hay build del juego exportada; no inventar SHA de juego.
+game_sha: NONE
+source_repo: https://github.com/dgl-ai/faro-mecanico
+web_repo: https://github.com/dgl-ai/faro-mecanico-web
+date: 2026-10-08
