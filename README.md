@@ -10,14 +10,14 @@ Repositorio **sólo** para la distribución web e infraestructura de despliegue 
 
 **Piloto P01 en preparación — todavía no jugable.** La página publicada es un placeholder de bootstrap; no hay build del juego.
 
-## Publicar una nueva build (Forge / Maestro, sin tocar infraestructura)
+## Publicar una nueva build (Forge / Maestro exportan y suben; Ferra sincroniza en el host)
 
 1. Exportar desde Godot 4.7.2 el preset **Web (Compatibility, sin threads)** del repo `faro-mecanico`.
 2. Copiar el contenido del export a `public/` en este repo (sobrescribir `index.html`, `index.pck`, `index.wasm`, `index.js` y assets) y regenerar `public/BUILD_INFO.txt` con el SHA real del commit del repo fuente y la fecha.
 3. Commit y push a `main`.
-4. En el VPS, Ferra (o quien tenga acceso) sincroniza: `git -C /opt/faro-mecanico-web/code pull` y recarga del contenedor (`docker service update --force faro-mecanico-web` — sólo si el bind no refleja los ficheros al instante; los ficheros estáticos se sirven al momento por bind mount).
+4. **Sólo Ferra, en el VPS:** ejecutar `/opt/faro-mecanico-web/sync.sh` — actualiza el clone `/opt/faro-mecanico-web/repo` (main, `--ff-only`, limpio) y copia **sólo `public/`** al document root `/opt/faro-mecanico-web/code`. La config nginx se sincroniza aparte (`nginx.conf` → `/opt/faro-mecanico-web/nginx.conf` + `nginx -s reload` en el contenedor). No hay auto-deploy; push a GitHub NO despliega. No hace falta reiniciar el servicio para copiar ficheros.
 
-No hay auto-deploy desde GitHub activado; la publicación al host es manual vía el paso 4.
+El document root nunca contiene `.git`, docs internas ni secretos: sólo el contenido de `public/`.
 
 ## Infraestructura (Ferra)
 
